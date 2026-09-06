@@ -377,6 +377,59 @@ body.loading{overflow:hidden}
 .modal-foot .btn{width:100%;justify-content:center}
 .modal-hint{margin-top:12px;font-size:.8rem;color:var(--muted-foreground);text-align:center}
 @media(max-width:420px){.modal-body .mf-row{grid-template-columns:1fr}}
+
+/* ===== live chat widget ===== */
+.chat-launcher{position:fixed;right:18px;bottom:76px;z-index:60;display:flex;align-items:center;gap:10px;cursor:pointer;border:0;background:transparent;padding:0}
+.chat-launcher .bubble{width:60px;height:60px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 28px rgba(20,120,116,.45);position:relative;transition:transform .15s}
+.chat-launcher:hover .bubble{transform:scale(1.07)}
+.chat-launcher .bubble svg{width:30px;height:30px;fill:#062522}
+.chat-launcher .bubble::after{content:"";position:absolute;top:4px;right:4px;width:13px;height:13px;border-radius:50%;background:#ff5252;border:2px solid var(--primary);animation:chatPulse 2s infinite}
+@keyframes chatPulse{0%{box-shadow:0 0 0 0 rgba(255,82,82,.6)}70%{box-shadow:0 0 0 9px rgba(255,82,82,0)}100%{box-shadow:0 0 0 0 rgba(255,82,82,0)}}
+.chat-launcher .tip{background:#fff;color:var(--ink);font-family:"Barlow Condensed",sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:.82rem;padding:9px 14px;border-radius:24px;box-shadow:var(--shadow-card);white-space:nowrap;animation:tipBob 2.6s ease-in-out infinite}
+@keyframes tipBob{0%,100%{transform:translateX(0)}50%{transform:translateX(-4px)}}
+@media(max-width:899px){.chat-launcher{bottom:70px}.chat-launcher .tip{display:none}}
+@media(min-width:900px){.chat-launcher{bottom:24px}}
+
+.chat-win{position:fixed;right:18px;bottom:18px;z-index:120;width:380px;max-width:calc(100vw - 24px);height:600px;max-height:calc(100vh - 36px);background:var(--background);border-radius:18px;box-shadow:var(--shadow-lift);display:flex;flex-direction:column;overflow:hidden;opacity:0;visibility:hidden;transform:translateY(20px) scale(.97);transform-origin:bottom right;transition:opacity .25s ease,transform .28s cubic-bezier(.2,.7,.2,1),visibility .25s}
+.chat-win.open{opacity:1;visibility:visible;transform:none}
+@media(max-width:520px){.chat-win{right:0;bottom:0;width:100vw;max-width:100vw;height:100dvh;max-height:100dvh;border-radius:0}}
+.chat-head{background:linear-gradient(135deg,#1a1d23,#0d0f13);color:#fff;padding:16px 18px;display:flex;align-items:center;gap:12px;flex:0 0 auto}
+.chat-head .av{width:44px;height:44px;border-radius:50%;background:var(--primary);color:#062522;display:flex;align-items:center;justify-content:center;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:1.3rem;position:relative;flex:0 0 auto}
+.chat-head .av::after{content:"";position:absolute;bottom:1px;right:1px;width:11px;height:11px;border-radius:50%;background:#25d366;border:2px solid #14161b}
+.chat-head .who{flex:1;min-width:0}
+.chat-head .who h4{font-family:"Barlow Condensed",sans-serif;font-size:1.15rem;font-weight:700;text-transform:none;letter-spacing:0;line-height:1.1}
+.chat-head .who p{font-size:.76rem;color:var(--ink-muted);display:flex;align-items:center;gap:5px}
+.chat-head .who p::before{content:"";width:7px;height:7px;border-radius:50%;background:#25d366;display:inline-block}
+.chat-head .x{background:rgba(255,255,255,.12);border:0;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1.1rem;line-height:1;flex:0 0 auto}
+.chat-head .x:hover{background:rgba(255,255,255,.22)}
+.chat-body{flex:1;overflow-y:auto;padding:18px 16px;display:flex;flex-direction:column;gap:10px;background:var(--surface);scroll-behavior:smooth}
+.msg{max-width:82%;padding:11px 14px;border-radius:16px;font-size:.92rem;line-height:1.45;animation:msgIn .28s ease}
+@keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.msg.bot{align-self:flex-start;background:#fff;color:var(--foreground);border-bottom-left-radius:5px;box-shadow:0 1px 2px rgba(0,0,0,.07)}
+.msg.user{align-self:flex-end;background:var(--primary);color:var(--primary-foreground);border-bottom-right-radius:5px}
+.msg.summary{align-self:flex-start;background:#fff;color:var(--foreground);border:1px solid var(--border);border-radius:12px;max-width:92%;box-shadow:0 1px 2px rgba(0,0,0,.07)}
+.msg.summary b{font-family:"Barlow Condensed",sans-serif;text-transform:uppercase;letter-spacing:.05em;font-size:.8rem;color:var(--muted-foreground)}
+.msg.summary .line{display:flex;justify-content:space-between;gap:12px;padding:3px 0;font-size:.88rem;border-bottom:1px dashed var(--border)}
+.msg.summary .line:last-child{border-bottom:0}
+.msg.summary .line span:first-child{color:var(--muted-foreground)}
+.msg.summary .line span:last-child{font-weight:600;text-align:right}
+.typing{align-self:flex-start;background:#fff;padding:13px 16px;border-radius:16px;border-bottom-left-radius:5px;display:inline-flex;gap:4px;box-shadow:0 1px 2px rgba(0,0,0,.07)}
+.typing span{width:7px;height:7px;border-radius:50%;background:#b9c0c8;animation:tdot 1.2s infinite}
+.typing span:nth-child(2){animation-delay:.2s}.typing span:nth-child(3){animation-delay:.4s}
+@keyframes tdot{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-5px);opacity:1}}
+.chat-quick{display:flex;flex-wrap:wrap;gap:8px;padding:0 16px 4px}
+.chat-quick button{font-family:"Barlow",sans-serif;font-size:.85rem;font-weight:600;background:#fff;border:1.5px solid var(--primary);color:var(--primary-dark);padding:8px 14px;border-radius:20px;cursor:pointer;transition:background .15s,color .15s}
+.chat-quick button:hover{background:var(--primary);color:var(--primary-foreground)}
+.chat-input{flex:0 0 auto;display:flex;gap:8px;padding:12px 14px;background:var(--background);border-top:1px solid var(--border)}
+.chat-input input{flex:1;border:1px solid var(--input);border-radius:24px;padding:11px 16px;font-size:.95rem;font-family:inherit;outline:none}
+.chat-input input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(31,182,176,.2)}
+.chat-input button{flex:0 0 auto;width:44px;height:44px;border-radius:50%;border:0;background:var(--primary);color:var(--primary-foreground);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.chat-input button:disabled{opacity:.4;cursor:default}
+.chat-input button svg{width:20px;height:20px;fill:currentColor}
+.chat-send-wa{padding:12px 16px;background:var(--background);border-top:1px solid var(--border)}
+.chat-send-wa .btn{width:100%;justify-content:center}
+.chat-restart{text-align:center;padding:0 0 12px;background:var(--background)}
+.chat-restart button{background:transparent;border:0;color:var(--muted-foreground);font-size:.8rem;cursor:pointer;text-decoration:underline}
 </style>
 </head>
 <body class="loading">
@@ -467,38 +520,34 @@ body.loading{overflow:hidden}
   </div>
 </footer>
 
-<!-- ============ WHATSAPP QUICK ENQUIRY MODAL ============ -->
-<div class="modal-overlay" id="waModal" role="dialog" aria-modal="true" aria-labelledby="waModalTitle">
-  <div class="modal">
-    <div class="modal-head">
-      <svg viewBox="0 0 24 24"><path d="M17.6 6.32A8 8 0 0 0 4.15 15l-1.1 4 4.1-1.08a8 8 0 0 0 3.82.97h.01a8 8 0 0 0 5.66-13.65zm-5.66 12.3h-.01a6.65 6.65 0 0 1-3.38-.93l-.24-.14-2.43.64.65-2.37-.16-.25a6.64 6.64 0 1 1 12.32-3.53 6.64 6.64 0 0 1-6.75 6.65zm3.64-4.98c-.2-.1-1.18-.58-1.36-.65s-.32-.1-.45.1-.51.64-.63.78-.23.15-.43.05a5.44 5.44 0 0 1-1.6-.99 6 6 0 0 1-1.11-1.38c-.12-.2 0-.31.09-.41s.2-.23.3-.35a1.4 1.4 0 0 0 .2-.34.37.37 0 0 0-.02-.35c-.05-.1-.45-1.09-.62-1.49s-.33-.34-.45-.34l-.39-.01a.74.74 0 0 0-.54.25 2.26 2.26 0 0 0-.7 1.68 3.92 3.92 0 0 0 .82 2.08 8.98 8.98 0 0 0 3.43 3.03c.48.2.85.33 1.14.43.48.15.92.13 1.26.08.39-.06 1.18-.48 1.35-.95s.17-.86.12-.95-.18-.14-.38-.24z"/></svg>
-      <div><h3 id="waModalTitle">Quick enquiry</h3><p>Fill in and send straight to WhatsApp</p></div>
-      <button class="modal-close" id="waModalClose" aria-label="Close">&times;</button>
-    </div>
-    <div class="modal-body">
-      <div class="mf"><label for="m-name">Your name <span class="req">*</span></label><input id="m-name" autocomplete="name" required></div>
-      <div class="mf mf-row">
-        <div><label for="m-phone">Phone <span class="req">*</span></label><input id="m-phone" type="tel" autocomplete="tel" required></div>
-        <div><label for="m-reg">Reg <span class="req">*</span></label><input id="m-reg" placeholder="AB12 CDE" style="text-transform:uppercase" required></div>
-      </div>
-      <div class="mf"><label for="m-email">Email</label><input id="m-email" type="email" placeholder="Optional" autocomplete="email"></div>
-      <div class="mf"><label for="m-service">Service needed</label><select id="m-service"></select></div>
-      <div class="mf"><label for="m-msg">Message</label><textarea id="m-msg" rows="3" placeholder="Tell us briefly what you need."></textarea></div>
-    </div>
-    <div class="modal-foot">
-      <button class="btn btn-wa" type="button" onclick="sendModalWhatsApp()">Send via WhatsApp</button>
-      <p class="modal-hint" id="mHint">Fields marked <span class="req">*</span> are required.</p>
-    </div>
+<!-- ============ LIVE CHAT WIDGET ============ -->
+<button class="chat-launcher" id="chatLauncher" aria-label="Chat to us live">
+  <span class="tip">Chat to us&nbsp;&mdash;&nbsp;live</span>
+  <span class="bubble">
+    <svg viewBox="0 0 24 24"><path d="M12 3C6.5 3 2 6.9 2 11.7c0 2.5 1.2 4.7 3.2 6.2-.1 1-.6 2.4-1.5 3.5-.2.2 0 .6.3.5 1.9-.4 3.4-1.1 4.5-1.8 1.1.3 2.3.5 3.5.5 5.5 0 10-3.9 10-8.7C22 6.9 17.5 3 12 3zm-4 8a1.2 1.2 0 1 1 0 2.4A1.2 1.2 0 0 1 8 11zm4 0a1.2 1.2 0 1 1 0 2.4A1.2 1.2 0 0 1 12 11zm4 0a1.2 1.2 0 1 1 0 2.4A1.2 1.2 0 0 1 16 11z"/></svg>
+  </span>
+</button>
+
+<div class="chat-win" id="chatWin" role="dialog" aria-label="Live chat with Bucks Car Repairs">
+  <div class="chat-head">
+    <div class="av">J</div>
+    <div class="who"><h4>Jack &middot; Bucks Car Repairs</h4><p>Typically replies in a few minutes</p></div>
+    <button class="x" id="chatClose" aria-label="Close chat">&times;</button>
   </div>
+  <div class="chat-body" id="chatBody"></div>
+  <div class="chat-quick" id="chatQuick"></div>
+  <div class="chat-input" id="chatInputRow">
+    <input id="chatInput" type="text" autocomplete="off" placeholder="Type your answer&hellip;" aria-label="Your message" />
+    <button id="chatSend" aria-label="Send"><svg viewBox="0 0 24 24"><path d="M3 20.5v-6l8-2.5-8-2.5v-6l19 8.5-19 8.5z"/></svg></button>
+  </div>
+  <div class="chat-send-wa hidden" id="chatWaRow"></div>
+  <div class="chat-restart hidden" id="chatRestartRow"><button id="chatRestart">Start again</button></div>
 </div>
 
-<!-- floating whatsapp + mobile bar -->
-<a class="wa-float" id="waFloat" href="#" role="button" aria-label="Message us on WhatsApp">
-  <svg viewBox="0 0 24 24"><path d="M17.6 6.32A8 8 0 0 0 4.15 15l-1.1 4 4.1-1.08a8 8 0 0 0 3.82.97h.01a8 8 0 0 0 5.66-13.65zm-5.66 12.3h-.01a6.65 6.65 0 0 1-3.38-.93l-.24-.14-2.43.64.65-2.37-.16-.25a6.64 6.64 0 1 1 12.32-3.53 6.64 6.64 0 0 1-6.75 6.65zm3.64-4.98c-.2-.1-1.18-.58-1.36-.65s-.32-.1-.45.1-.51.64-.63.78-.23.15-.43.05a5.44 5.44 0 0 1-1.6-.99 6 6 0 0 1-1.11-1.38c-.12-.2 0-.31.09-.41s.2-.23.3-.35a1.4 1.4 0 0 0 .2-.34.37.37 0 0 0-.02-.35c-.05-.1-.45-1.09-.62-1.49s-.33-.34-.45-.34l-.39-.01a.74.74 0 0 0-.54.25 2.26 2.26 0 0 0-.7 1.68 3.92 3.92 0 0 0 .82 2.08 8.98 8.98 0 0 0 3.43 3.03c.48.2.85.33 1.14.43.48.15.92.13 1.26.08.39-.06 1.18-.48 1.35-.95s.17-.86.12-.95-.18-.14-.38-.24z"/></svg>
-</a>
+<!-- mobile bottom bar: Call + Chat -->
 <div class="mobile-bar">
   <a class="call" href="tel:03300435499"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Call</a>
-  <a id="waBar" href="#" role="button"><svg viewBox="0 0 24 24" fill="#fff"><path d="M17.6 6.32A8 8 0 0 0 4.15 15l-1.1 4 4.1-1.08a8 8 0 0 0 3.82.97h.01a8 8 0 0 0 5.66-13.65zm-2.02 7.32c-.2-.1-1.18-.58-1.36-.65s-.32-.1-.45.1-.51.64-.63.78-.23.15-.43.05a5.44 5.44 0 0 1-1.6-.99 6 6 0 0 1-1.11-1.38c-.12-.2 0-.31.09-.41s.2-.23.3-.35a1.4 1.4 0 0 0 .2-.34.37.37 0 0 0-.02-.35c-.05-.1-.45-1.09-.62-1.49s-.33-.34-.45-.34l-.39-.01a.74.74 0 0 0-.54.25 2.26 2.26 0 0 0-.7 1.68 3.92 3.92 0 0 0 .82 2.08 8.98 8.98 0 0 0 3.43 3.03c.48.2.85.33 1.14.43.48.15.92.13 1.26.08.39-.06 1.18-.48 1.35-.95s.17-.86.12-.95-.18-.14-.38-.24z"/></svg>WhatsApp</a>
+  <a id="chatBar" href="#" role="button"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C6.5 3 2 6.9 2 11.7c0 2.5 1.2 4.7 3.2 6.2-.1 1-.6 2.4-1.5 3.5-.2.2 0 .6.3.5 1.9-.4 3.4-1.1 4.5-1.8 1.1.3 2.3.5 3.5.5 5.5 0 10-3.9 10-8.7C22 6.9 17.5 3 12 3z"/></svg>Chat to us</a>
 </div>
 
 <script>
@@ -791,55 +840,157 @@ function setupReveal(){
   els.forEach(function(e){ e.classList.add('reveal'); _revealObs.observe(e); });
 }
 
-/* ============ WHATSAPP MODAL ============ */
-function openWaModal(){
-  var sel=document.getElementById('m-service');
-  if(sel && !sel.options.length){
-    SERVICES.forEach(function(s){var o=document.createElement('option');o.textContent=s.title;sel.appendChild(o);});
-    var oe=document.createElement('option');oe.textContent='Something else';sel.appendChild(oe);
-  }
-  var m=document.getElementById('waModal'); m.classList.add('open');
-  document.body.style.overflow='hidden';
-  setTimeout(function(){var n=document.getElementById('m-name'); if(n) n.focus();},200);
+/* ============ LIVE CHAT BOT (Jack) ============ */
+var chat={step:0,data:{},done:false};
+var chatBody,chatQuick,chatInput,chatSend,chatInputRow,chatWaRow,chatRestartRow,chatWin;
+
+// conversation script. Each step shows bot message(s), then captures the user's reply into `key`.
+var CHAT_SCRIPT=[
+  {key:"name", bot:["Hi, welcome to Bucks Car Repairs \uD83D\uDC4B","My name\u2019s Jack \u2014 I\u2019ll grab a few quick details and get you booked in. What\u2019s your name?"],type:"text",placeholder:"Your name"},
+  {key:"service",bot:function(d){return ["Nice to meet you, "+d.name+"! \uD83D\uDE0A","What can we help you with today?"];},type:"choice",
+     choices:["MOT","Service","Brakes","Bodywork","Recovery","Something else"]},
+  {key:"reg",  bot:function(d){return ["Got it \u2014 "+String(d.service).toLowerCase()+". No problem.","What\u2019s your vehicle registration?"];},type:"text",placeholder:"e.g. AB12 CDE",transform:function(v){return v.toUpperCase();}},
+  {key:"vehicle",bot:["Thanks. And what\u2019s the make and model?"],type:"text",placeholder:"e.g. BMW 320d"},
+  {key:"phone",bot:["Perfect. What\u2019s the best number to reach you on?"],type:"text",placeholder:"Phone number"},
+  {key:"notes",bot:["Great. Anything else you\u2019d like us to know? (warning lights, dates, collection needed\u2026)"],type:"text",placeholder:"Type here, or \u201cno thanks\u201d",optional:true},
+  {key:null,   bot:function(d){return ["Brilliant \u2014 thanks "+d.name+"! Here\u2019s what I\u2019ve got:"];},type:"summary"}
+];
+
+function chatScrollDown(){ chatBody.scrollTop=chatBody.scrollHeight; }
+function addMsg(text,cls){
+  var d=document.createElement('div'); d.className='msg '+(cls||'bot'); d.textContent=text;
+  chatBody.appendChild(d); chatScrollDown(); return d;
 }
-function closeWaModal(){
-  document.getElementById('waModal').classList.remove('open');
-  document.body.style.overflow='';
+function showTyping(){
+  var t=document.createElement('div'); t.className='typing'; t.id='typingIndicator';
+  t.innerHTML='<span></span><span></span><span></span>';
+  chatBody.appendChild(t); chatScrollDown(); return t;
 }
-function sendModalWhatsApp(){
-  function v(id){var el=document.getElementById(id);return el?(el.value||'').trim():'';}
-  var name=v('m-name'), phone=v('m-phone'), reg=v('m-reg').toUpperCase(),
-      email=v('m-email'), service=v('m-service'), msg=v('m-msg');
-  var hint=document.getElementById('mHint');
-  if(!name||!phone||!reg){
-    hint.innerHTML='Please add your name, phone and registration first.';
-    hint.style.color='#c0392b'; return;
+function hideTyping(){ var t=document.getElementById('typingIndicator'); if(t) t.remove(); }
+
+// play the bot messages for a step, one after another with typing delays, then present input
+function playStep(){
+  var step=CHAT_SCRIPT[chat.step];
+  if(!step){ return; }
+  chatQuick.innerHTML=''; setInputEnabled(false);
+  var msgs=typeof step.bot==='function'?step.bot(chat.data):step.bot;
+  var i=0;
+  function next(){
+    if(i>=msgs.length){ presentInput(step); return; }
+    var delay=Math.min(1100,420+msgs[i].length*22);
+    var t=showTyping();
+    setTimeout(function(){ hideTyping(); addMsg(msgs[i],'bot'); i++; setTimeout(next,260); },delay);
   }
-  var lines=["New enquiry \u2014 Bucks Car Repairs","","Name: "+name,"Phone: "+phone];
-  if(email) lines.push("Email: "+email);
-  lines.push("Reg: "+reg);
-  if(service) lines.push("Service: "+service);
-  if(msg) lines.push("Message: "+msg);
-  window.open(waLink(lines.join("\n")),"_blank");
-  hint.textContent="Opening WhatsApp\u2026";
-  hint.style.color="var(--muted-foreground)";
-  setTimeout(closeWaModal,600);
+  next();
 }
 
-/* ============ INIT ============ */
-document.getElementById('year').textContent=new Date().getFullYear();
+function presentInput(step){
+  if(step.type==='summary'){ renderSummary(); return; }
+  if(step.type==='choice'){
+    step.choices.forEach(function(c){
+      var b=document.createElement('button'); b.type='button'; b.textContent=c;
+      b.onclick=function(){ handleAnswer(c); };
+      chatQuick.appendChild(b);
+    });
+    // allow typing a custom answer too
+    setInputEnabled(true,step);
+    chatInput.placeholder="Or type your own\u2026";
+  } else {
+    setInputEnabled(true,step);
+    chatInput.placeholder=step.placeholder||"Type your answer\u2026";
+    chatInput.focus();
+  }
+}
+
+function setInputEnabled(on,step){
+  chatInput.disabled=!on; chatSend.disabled=!on;
+  chatInputRow.style.opacity=on?'1':'.6';
+  chat._activeStep=on?step:null;
+}
+
+function handleAnswer(raw){
+  if(!chat._activeStep) return;              // ignore input while Jack is "typing"
+  var step=CHAT_SCRIPT[chat.step];
+  var val=(raw||'').trim(); if(!val) return;
+  if(step.transform) val=step.transform(val);
+  addMsg(val,'user');
+  if(step.key) chat.data[step.key]=val;
+  chatQuick.innerHTML=''; chatInput.value=''; setInputEnabled(false);
+  chat.step++;
+  setTimeout(playStep,300);
+}
+
+function submitInput(){
+  var step=chat._activeStep; if(!step) return;
+  var val=chatInput.value.trim();
+  if(!val){
+    if(step.optional){ val="No thanks"; } else { return; }
+  }
+  handleAnswer(val);
+}
+
+function renderSummary(){
+  var d=chat.data;
+  var box=document.createElement('div'); box.className='msg summary';
+  var rows=[
+    ["Name",d.name],["Service",d.service],["Reg",d.reg],
+    ["Vehicle",d.vehicle],["Phone",d.phone]
+  ];
+  if(d.notes && d.notes.toLowerCase()!=='no thanks' && d.notes.toLowerCase()!=='no') rows.push(["Notes",d.notes]);
+  var html='<b>Your enquiry</b>';
+  rows.forEach(function(r){ if(r[1]) html+='<div class="line"><span>'+r[0]+'</span><span>'+escHtml(r[1])+'</span></div>'; });
+  box.innerHTML=html; chatBody.appendChild(box); chatScrollDown();
+  // final bot line
+  var t=showTyping();
+  setTimeout(function(){
+    hideTyping();
+    addMsg("Tap below and I\u2019ll send this straight to our team on WhatsApp \u2014 we\u2019ll confirm your slot and price, usually the same day. \uD83D\uDC4D","bot");
+    // show WA button
+    chatInputRow.classList.add('hidden');
+    chatWaRow.classList.remove('hidden'); chatRestartRow.classList.remove('hidden');
+    chatWaRow.innerHTML='<button class="btn btn-wa" type="button" id="chatSendWa">'+I.wa+'Send to WhatsApp</button>';
+    document.getElementById('chatSendWa').onclick=chatSendToWhatsApp;
+    chat.done=true;
+  },800);
+}
+function escHtml(s){return (s||'').replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+
+function chatSendToWhatsApp(){
+  var d=chat.data;
+  var lines=["New enquiry via live chat \u2014 Bucks Car Repairs","",
+    "Name: "+d.name, "Service: "+d.service, "Reg: "+d.reg];
+  if(d.vehicle) lines.push("Vehicle: "+d.vehicle);
+  lines.push("Phone: "+d.phone);
+  if(d.notes && d.notes.toLowerCase()!=='no thanks' && d.notes.toLowerCase()!=='no') lines.push("Notes: "+d.notes);
+  window.open(waLink(lines.join("\n")),"_blank");
+}
+
+function startChat(){
+  chat={step:0,data:{},done:false,_activeStep:null};
+  chatBody.innerHTML=''; chatQuick.innerHTML='';
+  chatInputRow.classList.remove('hidden');
+  chatWaRow.classList.add('hidden'); chatRestartRow.classList.add('hidden');
+  chatInput.value='';
+  playStep();
+}
+function openChat(){
+  chatWin.classList.add('open');
+  document.getElementById('chatLauncher').style.display='none';
+  if(!chatBody.children.length) startChat();
+}
+function closeChat(){
+  chatWin.classList.remove('open');
+  document.getElementById('chatLauncher').style.display='';
+}
+
+
 // footer services links
 document.getElementById('footServices').innerHTML=SERVICES.slice(0,6).map(function(s){
   return '<li><a href="#/services#'+s.slug+'" >'+s.title+'</a></li>';
 }).join('');
-// whatsapp floating + bar buttons -> open modal
-document.getElementById('waFloat').addEventListener('click',function(e){e.preventDefault();openWaModal();});
-document.getElementById('waBar').addEventListener('click',function(e){e.preventDefault();openWaModal();});
-document.getElementById('waModalClose').addEventListener('click',closeWaModal);
-document.getElementById('waModal').addEventListener('click',function(e){ if(e.target===this) closeWaModal(); });
-document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeWaModal(); });
-// reg auto-uppercase
-document.addEventListener('input',function(e){ if(e.target && e.target.id==='m-reg'){ e.target.value=e.target.value.toUpperCase(); } });
+// mobile bar Chat button + Escape closes chat
+document.getElementById('chatBar').addEventListener('click',function(e){e.preventDefault();openChat();});
+document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeChat(); });
 // burger
 document.getElementById('burger').addEventListener('click',function(){
   var m=document.getElementById('mobnav'); var open=m.classList.toggle('open');
@@ -850,6 +1001,21 @@ var _hdr=document.querySelector('header');
 window.addEventListener('scroll',function(){
   if(window.scrollY>10) _hdr.classList.add('scrolled'); else _hdr.classList.remove('scrolled');
 },{passive:true});
+
+// ---- live chat wiring ----
+chatBody=document.getElementById('chatBody');
+chatQuick=document.getElementById('chatQuick');
+chatInput=document.getElementById('chatInput');
+chatSend=document.getElementById('chatSend');
+chatInputRow=document.getElementById('chatInputRow');
+chatWaRow=document.getElementById('chatWaRow');
+chatRestartRow=document.getElementById('chatRestartRow');
+chatWin=document.getElementById('chatWin');
+document.getElementById('chatLauncher').addEventListener('click',openChat);
+document.getElementById('chatClose').addEventListener('click',closeChat);
+document.getElementById('chatRestart').addEventListener('click',startChat);
+chatSend.addEventListener('click',submitInput);
+chatInput.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); submitInput(); } });
 // splash dismiss
 function dismissSplash(){
   var s=document.getElementById('splash'); if(!s) return;
